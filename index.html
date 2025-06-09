@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puntos en el Mapa</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js">
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <div id="riskMap" style="width: 100%; height: 600px; position: relative;">
+        <div id="map" style="width: 60%; height: 100%; float: left;"></div>
+    </div>
+    <div id="controls">
+    <input type="text" id="search" placeholder="Buscar ubicación...">
+    <button id="searchBtn">Buscar</button>
+    <button id="addPoint">Agregar</button>
+    <button id="editPoint">Editar</button>
+    <button id="removePoint">Eliminar</button>
+    <button id="calculateArea">Área</button>
+    <button id="generatePointsWithHeights">Cubicación</button>
+    <button id="eliminarExternosBtn">Eliminar</button>
+    <button id="calculos">Calculos</button>
+    <button id="runSimulation">Ejecutar Simulación</button>
+    </div>
+    <div id="calculationsDiv" style="flex-direction: column; gap: 20px; margin-top: 20px;">
+        <!-- Botones de control -->
+        <div id="calculationBtns">
+            <button id="toggleArrays">Arrays</button>
+            <button id="toggleTables">Tablas</button>
+            <button id="toggleClimaticos">Climáticos</button>
+        </div>
+        
+        <!-- Div que contiene los arrays (elevaciones, resultados y pendientes) -->
+        <div id="arraysDiv" style="display: none; flex-direction: column; gap: 20px;">
+            <div id="elevaciones"></div>
+            <div id="pendientes"></div>
+        </div>
+        
+        <!-- Div donde se ubicarán las tablas de pendientes y de elevaciones -->
+        <div id="tables" style="display: none;">
+            <div id="tablaPendientes">
+                <div id="rangoPendientesDiv">
+                    <table>
+                        <thead>
+                            <tr id="rangoPendientesHeader">
+                                <!-- Encabezado dinámico -->
+                            </tr>
+                        </thead>
+                        <tbody id="rangoPendientesTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="tablaElevaciones">
+                <table id="puntosTable">
+                    <thead>
+                        <tr>
+                            <th>Índice</th>
+                            <th>Latitud</th>
+                            <th>Longitud</th>
+                            <th>Elevación (m)</th>
+                            <th>Detalle</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Div para información climática -->
+        <div id="climaticos" style="display: none;">
+            <p>Información climática aquí...</p>
+        </div>
+    </div>
+
+    <div id="plotContainer">
+        <div id="elevacionesGraph" style="width: 30%; height: 95%;"></div>
+        <div id="pendientesGraph" style="width: 30%; height: 95%;"></div>
+    </div>
+
+    <div id="puntos" style="display: none;"></div>
+
+    <div>
+        <label>Color Línea: <input type="color" id="lineColor" value="#ff0000"></label>
+        <label>Color Relleno: <input type="color" id="fillColor" value="#00ff00"></label>
+        <label>Ancho Línea: <input type="number" id="lineWidth" value="2" min="1"></label>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function ejecutarSimulacion() {
+            const resultado = calcularSimulacion();
+            actualizarGrafico(resultado);
+        }
+
+        function actualizarGrafico(resultado) {
+            const trace = {
+                x: [1, 2, 3],
+                y: [resultado, resultado * 2, resultado * 3],
+                type: 'scatter',
+                line: {
+                    color: document.getElementById("lineColor").value,
+                    width: parseFloat(document.getElementById("lineWidth").value)
+                }
+            };
+
+            const layout = {
+                title: 'Resultados de la Simulación',
+                xaxis: { title: 'X' },
+                yaxis: { title: 'Y' }
+            };
+
+            Plotly.newPlot('plotContainer', [trace], layout);
+        }
+    </script>
+</body>
+
+</html>
