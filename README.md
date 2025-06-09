@@ -1,1 +1,1 @@
-# curvas_de_nivel
+Este script en JavaScript usa Leaflet y Plotly para mapear puntos, crear polígonos, calcular elevaciones mediante API, interpolar pendientes, y generar tablas y gráficos interactivos de elevación y pendientes. Permite gestionar puntos y visualizaciones dinámicas para análisis geoespacial.
